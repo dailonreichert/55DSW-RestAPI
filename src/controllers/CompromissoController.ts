@@ -4,19 +4,21 @@ import Compromisso from '../models/Compromisso';
 
 export default {
     async index(request: Request, response: Response){
-        const {id_contato, data_inicial, data_final} = request.query;
+        const {id_contato, id_usuario, data_inicial, data_final} = request.query;
+
+        if(!id_contato && !id_usuario){
+            return response.status(404).json({ message: 'É preciso passar o código do usuário e do contato para fazer a consulta'});
+        }
 
         const compromissoRepository = getRepository(Compromisso);
-
-        console.log(id_contato);
 
         let compromisso = [];
 
         if(data_inicial && data_final){
-            compromisso = await compromissoRepository.find({where: {id_contato: id_contato, data: Between(data_inicial, data_final)}});
+            compromisso = await compromissoRepository.find({where: {id_contato: id_contato, id_usuario: id_usuario, data: Between(data_inicial, data_final)}});
         }
         else{
-            compromisso = await compromissoRepository.find({where: {id_contato: id_contato}});
+            compromisso = await compromissoRepository.find({where: {id_contato: id_contato, id_usuario: id_usuario}});
         }
 
         return response.status(201).json(compromisso);

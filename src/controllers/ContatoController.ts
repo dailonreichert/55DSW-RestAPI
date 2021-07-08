@@ -38,7 +38,9 @@ export default {
 
         const contatoRepository = getRepository(Contato);
 
-        let contato = await contatoRepository.findOne({where: {id}});
+        let contato = await contatoRepository.findOne({where: {id: id, id_usuario: id_usuario}});
+
+        console.log(contato);
 
         if(contato){
             contato.name = name;

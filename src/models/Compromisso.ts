@@ -13,7 +13,7 @@ class Compromisso {
     @Column()
     local: string;
 
-    @Column('datetime')
+    @Column('date')
     data: string;
 
     @Column()
