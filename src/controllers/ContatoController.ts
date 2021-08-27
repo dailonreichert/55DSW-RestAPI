@@ -4,17 +4,20 @@ import Contato from '../models/Contato';
 
 export default {
     async index(request: Request, response: Response){
-        const {name} = request.query;
+        const {name, id_contato,id_usuario} = request.query;
 
         const contatoRepository = getRepository(Contato);
 
         let contatos = [];
 
         if(name){
-            contatos = await contatoRepository.find({where: {name}});
+            contatos = await contatoRepository.find({where: {name, id_usuario}});
+        }
+        else if(id_contato){
+            contatos = await contatoRepository.find({where: {id_usuario, id: id_contato}});
         }
         else{
-            contatos = await contatoRepository.find();
+            contatos = await contatoRepository.find({where: {id_usuario}});
         }
 
         return response.status(201).json(contatos);
@@ -22,6 +25,8 @@ export default {
 
     async create(request: Request, response: Response){
         const {name, fone, email, id_usuario} = request.body;
+
+        console.log(name, fone, email, id_usuario);
 
         const contatoRepository = getRepository(Contato);
 
